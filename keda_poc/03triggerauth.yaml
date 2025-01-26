@@ -1,0 +1,9 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: azure-servicebus-auth
+spec:
+  secretTargetRef:
+    - key: ServiceBusConnectionString # key in secret
+      name: func-app-secret # name of secret
+      parameter: connection # it should be as connection

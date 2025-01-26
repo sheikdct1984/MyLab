@@ -1,0 +1,18 @@
+apiVersion: azconfig.io/v1
+kind: AzureAppConfigurationProvider
+metadata:
+  name: func-app-config
+spec:
+  endpoint: "https://az-dev-si-platform-ac.azconfig.io"
+  target:
+    configMapName: func-app-config
+  auth:
+    managedIdentityClientId: "49xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxd6"
+  configuration:
+    selectors:
+      - keyFilter: ServiceBusConnectionString
+  secret:
+    auth:
+      managedIdentityClientId: "49xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxd6"
+    target:
+      secretName: func-app-secret

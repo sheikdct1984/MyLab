@@ -1,0 +1,22 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: azure-servicebus-queue-scaledobject
+  #namespace: default
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: demo-app
+  pollingInterval: 30
+  cooldownPeriod: 5
+  minReplicaCount: 0
+  maxReplicaCount: 3
+  triggers:
+    - type: azure-servicebus
+      metadata:
+        queueName: sms
+        messageCount: "1"
+        connection: ServiceBusConnectionString
+      authenticationRef:
+        # reference to TriggerAuthentication
+        name: azure-servicebus-auth
