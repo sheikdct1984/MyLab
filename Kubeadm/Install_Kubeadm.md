@@ -36,7 +36,7 @@ sudo containerd config default | sudo tee /etc/containerd/config.toml`
 `sudo systemctl restart containerd`
 
 ## Install Kubernetes
-`curl -fsSL https://pkgs.k8s.io/core:/stable:/$k8s_version/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/$k8s_version/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/'"$k8s_version"'/deb/ /' | sudo 
 tee /etc/apt/sources.list.d/kubernetes.list
@@ -44,7 +44,7 @@ tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
-sudo systemctl enable --now kubelet`
+sudo systemctl enable --now kubelet
 
 ## Disable swap
 `sudo swapoff -a`
@@ -59,11 +59,11 @@ sudo systemctl enable --now kubelet`
 
 ## Initialize the Cluster (Run only on master)
 
-`sudo kubeadm init --pod-network-cidr=10.244.0.0/16
-exit`
-`mkdir -p $HOME/.kube
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+exit
+mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config`
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
 ## Install Flannel (Run only on master)
