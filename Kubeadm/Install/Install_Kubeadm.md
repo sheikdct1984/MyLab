@@ -106,3 +106,101 @@ alias k=kubectl
 k get node
 k get pods --all-namespaces
 ```
+
+## Master Node: (Normal user account)
+
+### View Kube config
+```sh
+cat $HOME/.kube/config
+```
+
+### List SSH keys
+```sh
+ls ~/.ssh/
+```
+
+### Generate SSH key
+```sh
+ssh-keygen -t rsa -b 4096 -C "azureuser"
+```
+
+### List SSH keys again
+```sh
+ls ~/.ssh/
+```
+
+### View public SSH key
+```sh
+cat ~/.ssh/id_rsa.pub
+```
+
+## Worker 1: (Normal user account)
+
+### Create Kube config directory
+```sh
+mkdir -p $HOME/.kube
+```
+
+### Edit authorized keys
+```sh
+vim ~/.ssh/authorized_keys
+```
+
+### Paste the contents of the public SSH key from the master node
+
+## Back to Master Node:
+
+### Copy Kube config to Worker 1
+```sh
+scp $HOME/.kube/config azureuser@10.0.1.4:$HOME/.kube/config
+```
+
+## Back to Worker 1:
+
+### Change ownership of Kube config
+```sh
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+### Set kubectl alias and verify nodes and pods
+```sh
+alias k=kubectl
+k get node
+k get pod
+```
+
+## Worker 2: (Normal user account)
+
+### Create Kube config directory
+```sh
+mkdir -p $HOME/.kube
+```
+
+### Edit authorized keys
+```sh
+vim ~/.ssh/authorized_keys
+```
+
+### Paste the contents of the public SSH key from the master node
+
+## Back to Master Node:
+
+### Copy Kube config to Worker 2
+```sh
+scp $HOME/.kube/config azureuser@10.0.1.5:$HOME/.kube/config
+```
+
+## Back to Worker 2:
+
+### Change ownership of Kube config
+```sh
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+### Set kubectl alias and verify nodes and pods
+```sh
+alias k=kubectl
+k get node
+k get pod
+```
+
