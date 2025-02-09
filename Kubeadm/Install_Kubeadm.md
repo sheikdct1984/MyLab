@@ -100,7 +100,7 @@ kubeadm join xxxxxx:6443 --token xxxxxxxxx \
 
 vi $HOME/.kube/config   # Copy the contents of this file from master node
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-kubectl get node
-kubectl get pods --all-namespaces
+alias k=kubectl
+k get node
+k get pods --all-namespaces
 ```
