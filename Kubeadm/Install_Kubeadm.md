@@ -1,4 +1,4 @@
-## Master Worker Nodes
+## Master & Worker Nodes Steps
 
 ### Root user access
 ```sh
@@ -72,7 +72,7 @@ sudo modprobe br_netfilter
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-## Master Node only
+<span style="color:red">## Master Node only</span>
 
 ### Initialize the Cluster (Run only on master)
 ```sh
@@ -90,5 +90,17 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 
 ### Verify Installation
 ```sh
+kubectl get pods --all-namespaces
+```
+<span style="color:blue">## Worker Nodes only</span>
+
+```sh
+kubeadm join xxxxxx:6443 --token xxxxxxxxx \
+    --discovery-token-ca-cert-hash xxxxxxxxxxxxxxx
+
+vi $HOME/.kube/config   # Copy the contents of this file from master node
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl get node
 kubectl get pods --all-namespaces
 ```
