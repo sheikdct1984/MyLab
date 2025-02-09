@@ -129,7 +129,7 @@ ssh-keygen -t rsa -b 4096 -C "azureuser"
 ls ~/.ssh/
 ```
 
-### View public SSH key
+### View public SSH key and copy thr contents 
 ```sh
 cat ~/.ssh/id_rsa.pub
 ```
@@ -141,7 +141,7 @@ cat ~/.ssh/id_rsa.pub
 mkdir -p $HOME/.kube
 ```
 
-### Edit authorized keys
+### Edit authorized keys and paste the copied contents from master node
 ```sh
 vim ~/.ssh/authorized_keys
 ```
@@ -176,7 +176,7 @@ k get pod
 mkdir -p $HOME/.kube
 ```
 
-### Edit authorized keys
+### Edit authorized keys and paste the copied contents from master node
 ```sh
 vim ~/.ssh/authorized_keys
 ```
