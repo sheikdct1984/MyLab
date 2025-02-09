@@ -72,7 +72,7 @@ sudo modprobe br_netfilter
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-<span style="color:red">## Master Node only</span>
+## Master Node only
 
 ### Initialize the Cluster (Run only on master)
 ```sh
@@ -92,7 +92,7 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 ```sh
 kubectl get pods --all-namespaces
 ```
-<span style="color:blue">## Worker Nodes only</span>
+## Worker Node only
 
 ```sh
 kubeadm join xxxxxx:6443 --token xxxxxxxxx \
