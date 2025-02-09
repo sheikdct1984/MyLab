@@ -1,8 +1,8 @@
-#Master  Worker Nodes
-#Root user access
+           ******#Master  Worker Nodes****
+#Root user access**
 sudo su
 
-#setting K8s Cluster version
+**#setting K8s Cluster version**
 export k8s_version="v1.29"
 echo $k8s_version 
 #Creating Kube config folder
