@@ -146,7 +146,6 @@ mkdir -p $HOME/.kube
 vim ~/.ssh/authorized_keys
 ```
 
-### Paste the contents of the public SSH key from the master node
 
 ## Back to Master Node:
 
@@ -181,7 +180,7 @@ mkdir -p $HOME/.kube
 vim ~/.ssh/authorized_keys
 ```
 
-### Paste the contents of the public SSH key from the master node
+
 
 ## Back to Master Node:
 
