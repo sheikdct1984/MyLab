@@ -92,6 +92,7 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 ```sh
 alias k=kubectl
 k get pods --all-namespaces
+k get no
 ```
 ## Worker Node only
 
