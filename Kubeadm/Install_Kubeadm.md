@@ -90,7 +90,8 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 
 ### Verify Installation
 ```sh
-kubectl get pods --all-namespaces
+alias k=kubectl
+k get pods --all-namespaces
 ```
 ## Worker Node only
 
