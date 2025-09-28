@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: virtual-svc
+  namespace: istio-poc
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ext-host-gwy
+  http:
+  - route:
+    - destination:
+        host: my-nginx-istio-1 
+      weight: 90
+    - destination:
+        host: my-nginx-istio-2
+      weight: 10

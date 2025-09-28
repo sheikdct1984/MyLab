@@ -1,0 +1,122 @@
+
+
+kubectl get svc -n istio-system
+istioctl install --set profile=demo -y
+kubectl create namespace istio-poc
+kubectl create deployment my-nginx-istio-1 --replicas=1 --image=nginx -n istio-poc
+kubectl create deployment my-nginx-istio-2 --replicas=2 --image=nginx -n istio-poc
+kubectl expose -n istio-poc deployments.apps my-nginx-istio-1 --port=80
+kubectl expose -n istio-poc deployments.apps my-nginx-istio-2 --port=80
+
+istioctl analyze -n istio-poc
+kubectl label namespace istio-poc istio-injection=enabled
+kubectl -n istio-poc rollout restart deploy
+#Exec into nginx pods and modify index.html to identify the pods
+
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: ext-host-gwy
+  namespace: istio-poc
+spec:
+  selector:
+    istio: ingressgateway # use istio LB SVC Label name
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: virtual-svc
+  namespace: istio-poc
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ext-host-gwy
+  http:
+  - route:
+    - destination:
+        host: my-nginx-istio-1 
+      weight: 90
+    - destination:
+        host: my-nginx-istio-2
+      weight: 10
+kubectl run test --rm -it -n kube-public --image=nicolaka/netshoot --restart=Never -- curl -s -k "http://4.254.88.45"
+kubectl run test --rm -it -n kube-public --image=nicolaka/netshoot --restart=Never -- sh -c 'while true;do curl -s -k "http://4.254.88.45" | grep "SVC";done'
+
+Uninstall
+===========
+kubectl delete ns istio-poc 
+istioctl uninstall --purge
+kubectl delete ns istio-system
+
+
+
+
+Helm - Install
+==============
+helm install istio-base istio/base -n istio-system --set defaultRevision=default --create-namespace
+helm install istiod istio/istiod -n istio-system --wait
+helm install istio-ingress istio/gateway -n istio-system --wait
+
+
+kubectl create namespace istio-poc
+kubectl create deployment my-nginx-istio-1 --replicas=1 --image=nginx -n istio-poc
+kubectl create deployment my-nginx-istio-2 --replicas=2 --image=nginx -n istio-poc
+kubectl expose -n istio-poc deployments.apps my-nginx-istio-1 --port=80
+kubectl expose -n istio-poc deployments.apps my-nginx-istio-2 --port=80
+
+kubectl label namespace istio-poc istio-injection=enabled
+kubectl -n istio-poc rollout restart deploy
+
+# Exec into nginx pods and modify index.html to identify the pods
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: ext-host-gwy
+  namespace: istio-poc
+spec:
+  selector:
+     app: istio-ingress # use istio LB SVC Label name
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: virtual-svc
+  namespace: istio-poc
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ext-host-gwy
+  http:
+  - route:
+    - destination:
+        host: my-nginx-istio-1 
+      weight: 90
+    - destination:
+        host: my-nginx-istio-2
+      weight: 10
+
+
+Helm - Uninstall
+================
+kubectl delete ns istio-poc
+helm uninstall istio-ingress -n istio-system
+helm uninstall istiod -n istio-system
+helm uninstall istio-base -n istio-system
+kubectl delete ns istio-system
